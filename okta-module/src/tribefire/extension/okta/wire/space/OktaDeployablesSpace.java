@@ -41,11 +41,11 @@ import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.space.WireSpace;
 
 import tribefire.extension.okta.deployment.model.OktaAccess;
-import tribefire.extension.okta.deployment.model.jwt.OktaJwtTokenCredentialsAuthenticator;
 import tribefire.extension.okta.deployment.model.OktaAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaClientSecretTokenAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaConfiguredTokenAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaOauthTokenAuthenticationSupplier;
+import tribefire.extension.okta.deployment.model.jwt.OktaJwtTokenCredentialsAuthenticator;
 import tribefire.extension.okta.model.OktaGroup;
 import tribefire.extension.okta.model.OktaUser;
 import tribefire.extension.okta.processing.auth.ClientSecretTokenAuthenticationSupplier;
@@ -146,6 +146,7 @@ public class OktaDeployablesSpace implements WireSpace, OktaCommons {
 		}
 		bean.setEvaluator(tfPlatform.systemUserRelated().evaluator());
 		bean.setOktaDomainId(oauthSupplier.getOktaDomainId());
+		bean.setModuleClassLoader(module.moduleClassLoader());
 
 		String keyModulusN = oauthSupplier.getKeyModulusN();
 		String privateExponentD = oauthSupplier.getPrivateExponentD();
@@ -188,6 +189,7 @@ public class OktaDeployablesSpace implements WireSpace, OktaCommons {
 		bean.setUsernameClaim(deployable.getUsernameClaim());
 		bean.setDefaultRoles(deployable.getDefaultRoles());
 		bean.setInvalidateTokenCredentialsOnLogout(deployable.getInvalidateTokenCredentialsOnLogout());
+		bean.setModuleClassLoader(module.moduleClassLoader());
 
 		return bean;
 	}

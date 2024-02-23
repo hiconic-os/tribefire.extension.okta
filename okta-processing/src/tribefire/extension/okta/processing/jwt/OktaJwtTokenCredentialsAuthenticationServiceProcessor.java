@@ -35,6 +35,8 @@ public class OktaJwtTokenCredentialsAuthenticationServiceProcessor extends Abstr
 
 	private AccessTokenVerifier accessTokenVerifier;
 
+	private ClassLoader moduleClassLoader;
+
 	@Required
 	@Configurable
 	public void setIssuer(String issuer) {
@@ -53,15 +55,27 @@ public class OktaJwtTokenCredentialsAuthenticationServiceProcessor extends Abstr
 		this.connectionTimeoutMs = connectionTimeoutMs;
 	}
 
+	@Required
+	@Configurable
+	public void setModuleClassLoader(ClassLoader moduleClassLoader) {
+		this.moduleClassLoader = moduleClassLoader;
+	}
+
 	@Override
 	public void postConstruct() {
-		//@formatter:off
-		accessTokenVerifier = JwtVerifiers.accessTokenVerifierBuilder()
-			.setIssuer(issuer)
-			.setAudience(audience)                // defaults to 'api://default'
-			.setConnectionTimeout(Duration.ofMillis(connectionTimeoutMs)) // defaults to 1s
-			.build();
-		//@formatter:on
+		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(moduleClassLoader);
+		try {
+			//@formatter:off
+			accessTokenVerifier = JwtVerifiers.accessTokenVerifierBuilder()
+				.setIssuer(issuer)
+				.setAudience(audience)                // defaults to 'api://default'
+				.setConnectionTimeout(Duration.ofMillis(connectionTimeoutMs)) // defaults to 1s
+				.build();
+			//@formatter:on
+		} finally {
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
+		}
 	}
 
 	@Override
@@ -76,4 +90,5 @@ public class OktaJwtTokenCredentialsAuthenticationServiceProcessor extends Abstr
 			return Reasons.build(InvalidCredentials.T).text("JWT Token was not a valid Okta token").toMaybe();
 		}
 	}
+
 }

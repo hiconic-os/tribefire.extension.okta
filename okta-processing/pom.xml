@@ -111,15 +111,5 @@ You should have received a copy of the GNU Lesser General Public License along w
             <artifactId>jjwt-api</artifactId>
             <version>${V.io.jsonwebtoken}</version>
         </dependency>
-        <dependency>
-            <groupId>com.braintribe.gm</groupId>
-            <artifactId>http-transport-api</artifactId>
-            <version>${V.com.braintribe.gm}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt-api</artifactId>
-            <version>${V.io.jsonwebtoken}</version>
-        </dependency>
     </dependencies>
 </project>

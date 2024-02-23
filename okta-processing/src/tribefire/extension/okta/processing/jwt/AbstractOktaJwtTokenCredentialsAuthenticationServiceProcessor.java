@@ -117,9 +117,11 @@ abstract public class AbstractOktaJwtTokenCredentialsAuthenticationServiceProces
 		AuthenticatedUser authenticatedUser = AuthenticatedUser.T.create();
 		authenticatedUser.setUser(user);
 
+		Map<String, String> properties = authenticatedUser.getProperties();
+		properties.put("jwtToken", token);
+
 		// transfer properties
 		if (!propertiesClaims.isEmpty()) {
-			Map<String, String> properties = authenticatedUser.getProperties();
 
 			for (String propClaim : propertiesClaims) {
 				Object value = claims.get(propClaim);

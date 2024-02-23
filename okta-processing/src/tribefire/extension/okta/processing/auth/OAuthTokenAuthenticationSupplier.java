@@ -50,6 +50,8 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 
 	private ReentrantLock updateLock = new ReentrantLock();
 
+	private ClassLoader moduleClassLoader;
+
 	@Override
 	public void authorizeRequest(HasAuthorization request) {
 		updateToken(request);
@@ -64,6 +66,8 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 		}
 
 		updateLock.lock();
+		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
+		Thread.currentThread().setContextClassLoader(moduleClassLoader);
 		try {
 			if (jwtToken != null && now.isBefore(validUntil)) {
 				return;
@@ -101,6 +105,7 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 			}
 		} finally {
 			updateLock.unlock();
+			Thread.currentThread().setContextClassLoader(oldClassLoader);
 		}
 	}
 
@@ -146,6 +151,12 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 	@Required
 	public void setOktaDomainId(String oktaDomainId) {
 		this.oktaDomainId = oktaDomainId;
+	}
+
+	@Configurable
+	@Required
+	public void setModuleClassLoader(ClassLoader moduleClassLoader) {
+		this.moduleClassLoader = moduleClassLoader;
 	}
 
 }
