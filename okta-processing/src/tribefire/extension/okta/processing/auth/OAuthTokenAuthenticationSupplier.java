@@ -74,12 +74,12 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 			}
 			//@formatter:off
 			String jwt = Jwts.builder()
-			        .setAudience(audience)
-			        .setIssuedAt(Date.from(now))
-			        .setExpiration(Date.from(now.plus(expirationDuration)))
-			        .setIssuer(clientId)
-			        .setSubject(clientId)
-			        .setId(UUID.randomUUID().toString())
+			        .audience().add(audience).and()
+			        .issuedAt(Date.from(now))
+			        .expiration(Date.from(now.plus(expirationDuration)))
+			        .issuer(clientId)
+			        .subject(clientId)
+			        .id(UUID.randomUUID().toString())
 			        .signWith(privateKey)
 			        .compact();
 			//@formatter:on
