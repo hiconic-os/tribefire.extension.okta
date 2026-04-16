@@ -15,7 +15,6 @@
 // ============================================================================
 package tribefire.extension.okta.templates.wire.contract;
 
-import com.braintribe.model.ddra.DdraConfiguration;
 import com.braintribe.model.deployment.Module;
 import com.braintribe.model.meta.GmMetaModel;
 import com.braintribe.model.meta.GmStringType;
@@ -59,9 +58,6 @@ public interface ExistingInstancesContract extends WireSpace, OktaCommons {
 	// ***************************************************************************************************
 	// DDRA
 	// ***************************************************************************************************
-
-	@GlobalId("ddra:config")
-	DdraConfiguration ddraConfiguration();
 
 	@GlobalId("type:string")
 	GmStringType stringType();

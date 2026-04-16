@@ -101,7 +101,7 @@ public class OktaGroupReader extends OktaReader
 		return this.dispatcher.findEntities(context);
 	}
 
-	protected Iterable<OktaGroup> findEntries(PopulationReadingContext<? extends OktaGroup> context) {
+	protected Iterable<OktaGroup> findEntries(@SuppressWarnings("unused") PopulationReadingContext<? extends OktaGroup> context) {
 		ListGroups request = ListGroups.T.create();
 
 		List<OktaGroup> oktaGroups = evaluateOktaRequest(request);

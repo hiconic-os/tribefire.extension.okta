@@ -15,7 +15,6 @@
 // ============================================================================
 package tribefire.extension.okta.templates.wire.space;
 
-import com.braintribe.logging.Logger;
 import com.braintribe.model.deployment.http.meta.HttpDefaultFailureResponseType;
 import com.braintribe.model.deployment.http.meta.HttpProcessWith;
 import com.braintribe.model.extensiondeployment.meta.PreProcessWith;
@@ -30,7 +29,6 @@ import com.braintribe.model.processing.meta.editor.ModelMetaDataEditor;
 import com.braintribe.wire.api.annotation.Import;
 import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.scope.InstanceConfiguration;
-import com.braintribe.wire.api.space.WireSpace;
 
 import tribefire.extension.okta.api.model.AuthorizedOktaRequest;
 import tribefire.extension.okta.api.model.OktaRequest;
@@ -57,9 +55,7 @@ import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
 import tribrefire.extension.okta.common.OktaCommons;
 
 @Managed
-public class OktaMetaDataSpace implements WireSpace, OktaMetaDataContract, OktaCommons {
-
-	private static final Logger logger = Logger.getLogger(OktaMetaDataSpace.class);
+public class OktaMetaDataSpace implements OktaMetaDataContract, OktaCommons {
 
 	@Import
 	private OktaModelsContract models;
@@ -144,6 +140,7 @@ public class OktaMetaDataSpace implements WireSpace, OktaMetaDataContract, OktaC
 		return bean;
 	}
 
+	@Override
 	@Managed
 	public PreProcessWith preProcessWithConfiguredAuthorization(OktaTemplateContext context, OktaAuthenticationSupplier authSupplier) {
 		PreProcessWith bean = context.create(PreProcessWith.T, InstanceConfiguration.currentInstance());

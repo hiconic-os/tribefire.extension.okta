@@ -15,14 +15,10 @@
 // ============================================================================
 package tribefire.extension.okta.templates.api;
 
-import com.braintribe.logging.Logger;
-
 import tribefire.extension.okta.deployment.model.OktaAuthenticationSupplier;
 import tribefire.extension.templates.api.TemplateContextImpl;
 
 public class OktaTemplateContextImpl extends TemplateContextImpl<OktaTemplateContext> implements OktaTemplateContext, OktaTemplateContextBuilder {
-
-	private static final Logger logger = Logger.getLogger(OktaTemplateContextImpl.class);
 
 	private String context;
 

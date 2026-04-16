@@ -44,15 +44,15 @@ public class ClientSecretTokenAuthenticationSupplier implements AuthenticationSu
 	private Instant validUntil;
 	private String oktaDomainId = "default.access.okta";
 
-	private ReentrantLock updateLock = new ReentrantLock();
+	private final ReentrantLock updateLock = new ReentrantLock();
 
 	@Override
 	public void authorizeRequest(HasAuthorization request) {
-		updateToken(request);
+		updateToken();
 		request.setAuthorization(tokenType + " " + jwtToken);
 	}
 
-	private void updateToken(HasAuthorization originalRequest) {
+	private void updateToken() {
 		Instant now = Instant.now();
 
 		if (jwtToken != null && now.isBefore(validUntil)) {

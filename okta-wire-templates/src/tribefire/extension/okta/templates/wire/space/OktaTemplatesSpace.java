@@ -23,7 +23,6 @@ import com.braintribe.utils.lcd.StringTools;
 import com.braintribe.wire.api.annotation.Import;
 import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.scope.InstanceConfiguration;
-import com.braintribe.wire.api.space.WireSpace;
 
 import tribefire.cortex.initializer.support.integrity.wire.contract.CoreInstancesContract;
 import tribefire.extension.okta.deployment.model.OktaAccess;
@@ -34,14 +33,13 @@ import tribefire.extension.okta.deployment.model.OktaConfiguredTokenAuthenticati
 import tribefire.extension.okta.deployment.model.OktaOauthTokenAuthenticationSupplier;
 import tribefire.extension.okta.templates.api.OktaTemplateContext;
 import tribefire.extension.okta.templates.wire.contract.ExistingInstancesContract;
-import tribefire.extension.okta.templates.wire.contract.OktaDbMappingsContract;
 import tribefire.extension.okta.templates.wire.contract.OktaMetaDataContract;
 import tribefire.extension.okta.templates.wire.contract.OktaModelsContract;
 import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
 import tribrefire.extension.okta.common.OktaCommons;
 
 @Managed
-public class OktaTemplatesSpace implements WireSpace, OktaTemplatesContract, OktaCommons {
+public class OktaTemplatesSpace implements OktaTemplatesContract, OktaCommons {
 
 	private static final Logger logger = Logger.getLogger(OktaTemplatesSpace.class);
 
@@ -53,9 +51,6 @@ public class OktaTemplatesSpace implements WireSpace, OktaTemplatesContract, Okt
 
 	@Import
 	private CoreInstancesContract coreInstances;
-
-	@Import
-	private OktaDbMappingsContract dbMappings;
 
 	@Import
 	private OktaMetaDataContract metadata;

@@ -100,7 +100,7 @@ public class OktaUserReader extends OktaReader implements EntityReader<OktaUser>
 		return this.dispatcher.findEntities(context);
 	}
 
-	protected Iterable<OktaUser> findEntries(PopulationReadingContext<? extends OktaUser> context) {
+	protected Iterable<OktaUser> findEntries(@SuppressWarnings("unused") PopulationReadingContext<? extends OktaUser> context) {
 		ListUsers request = ListUsers.T.create();
 		
 		List<OktaUser> oktaUsers = evaluateOktaRequest(request);

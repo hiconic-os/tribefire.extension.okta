@@ -33,7 +33,6 @@ import com.braintribe.model.meta.selector.DeclaredPropertySelector;
 import com.braintribe.wire.api.annotation.Import;
 import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.scope.InstanceConfiguration;
-import com.braintribe.wire.api.space.WireSpace;
 
 import tribefire.extension.okta.deployment.model.OktaAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaClientSecretTokenAuthenticationSupplier;
@@ -46,7 +45,7 @@ import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
 import tribrefire.extension.okta.common.OktaCommons;
 
 @Managed
-public class OktaHttpSpace implements WireSpace, OktaHttpContract, OktaCommons {
+public class OktaHttpSpace implements OktaHttpContract, OktaCommons {
 
 	private static final Logger logger = Logger.getLogger(OktaHttpSpace.class);
 

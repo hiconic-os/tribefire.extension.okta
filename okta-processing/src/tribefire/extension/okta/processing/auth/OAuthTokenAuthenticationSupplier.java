@@ -52,17 +52,17 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 	private String tokenType;
 	private Instant validUntil;
 
-	private ReentrantLock updateLock = new ReentrantLock();
+	private final ReentrantLock updateLock = new ReentrantLock();
 
 	private ClassLoader moduleClassLoader;
 
 	@Override
 	public void authorizeRequest(HasAuthorization request) {
-		updateToken(request);
+		updateToken();
 		request.setAuthorization(tokenType + " " + jwtToken);
 	}
 
-	private void updateToken(HasAuthorization originalRequest) {
+	private void updateToken() {
 		Instant now = Instant.now();
 
 		if (jwtToken != null && now.isBefore(validUntil)) {
