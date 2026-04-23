@@ -71,7 +71,10 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 
 		updateLock.lock();
 		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(moduleClassLoader);
+		boolean needsCustomClassLoader = moduleClassLoader != null && moduleClassLoader != oldClassLoader;
+		if (needsCustomClassLoader)
+			Thread.currentThread().setContextClassLoader(moduleClassLoader);
+
 		try {
 			if (jwtToken != null && now.isBefore(validUntil)) {
 				return;
@@ -108,8 +111,9 @@ public class OAuthTokenAuthenticationSupplier implements AuthenticationSupplier,
 				throw new IllegalStateException("Could not create an OAuth JWT token: " + result);
 			}
 		} finally {
+			if (needsCustomClassLoader)
+				Thread.currentThread().setContextClassLoader(oldClassLoader);
 			updateLock.unlock();
-			Thread.currentThread().setContextClassLoader(oldClassLoader);
 		}
 	}
 

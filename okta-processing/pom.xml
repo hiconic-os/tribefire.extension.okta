@@ -33,12 +33,6 @@ limitations under the License.
     <dependencies>
         <dependency>
             <groupId>tribefire.extension.okta</groupId>
-            <artifactId>okta-deployment-model</artifactId>
-            <version>${V.tribefire.extension.okta}</version>
-            <?tag asset ?>
-        </dependency>
-        <dependency>
-            <groupId>tribefire.extension.okta</groupId>
             <artifactId>okta-model</artifactId>
             <version>${V.tribefire.extension.okta}</version>
             <?tag asset?>

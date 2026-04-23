@@ -38,10 +38,7 @@ import tribefire.extension.okta.deployment.model.OktaAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaClientSecretTokenAuthenticationSupplier;
 import tribefire.extension.okta.model.OktaError;
 import tribefire.extension.okta.templates.api.OktaTemplateContext;
-import tribefire.extension.okta.templates.wire.contract.ExistingInstancesContract;
 import tribefire.extension.okta.templates.wire.contract.OktaHttpContract;
-import tribefire.extension.okta.templates.wire.contract.OktaModelsContract;
-import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
 import tribrefire.extension.okta.common.OktaCommons;
 
 @Managed
@@ -50,16 +47,10 @@ public class OktaHttpSpace implements OktaHttpContract, OktaCommons {
 	private static final Logger logger = Logger.getLogger(OktaHttpSpace.class);
 
 	@Import
-	private OktaModelsContract models;
+	private OktaModelsSpace models;
 
 	@Import
-	private OktaTemplatesContract templates;
-
-	@Import
-	private ExistingInstancesContract existing;
-
-	@Import
-	private OktaTemplatesContract initializer;
+	private OktaTemplatesSpace templates;
 
 	private static AtomicInteger counter = new AtomicInteger(0);
 

@@ -60,17 +60,20 @@ abstract public class AbstractOktaJwtTokenCredentialsAuthenticationServiceProces
 
 	@Configurable
 	public void setPropertiesClaims(Set<String> propertiesClaims) {
-		this.propertiesClaims = propertiesClaims;
+		if (propertiesClaims != null)
+			this.propertiesClaims = propertiesClaims;
 	}
 
 	@Configurable
 	public void setDefaultRoles(Set<String> defaultRoles) {
-		this.defaultRoles = defaultRoles;
+		if (defaultRoles != null)
+			this.defaultRoles = defaultRoles;
 	}
 
 	@Configurable
 	public void setClaimRolesAndPrefixes(Map<String, String> claimRolesAndPrefixes) {
-		this.claimRolesAndPrefixes = claimRolesAndPrefixes;
+		if (claimRolesAndPrefixes != null)
+			this.claimRolesAndPrefixes = claimRolesAndPrefixes;
 	}
 
 	@Required
@@ -90,13 +93,10 @@ abstract public class AbstractOktaJwtTokenCredentialsAuthenticationServiceProces
 			JwtTokenCredentials credentials) {
 
 		String token = credentials.getToken();
-
-		if (token == null) {
+		if (token == null)
 			return Reasons.build(InvalidCredentials.T).text("JwtTokenCredentials.token must not be null").toMaybe();
-		}
 
 		Maybe<Jwt> jwtMaybe = decodeJwt(token);
-
 		if (jwtMaybe.isUnsatisfied())
 			return jwtMaybe.whyUnsatisfied().asMaybe();
 
@@ -126,7 +126,6 @@ abstract public class AbstractOktaJwtTokenCredentialsAuthenticationServiceProces
 
 		// transfer properties
 		if (!propertiesClaims.isEmpty()) {
-
 			for (String propClaim : propertiesClaims) {
 				Object value = claims.get(propClaim);
 				if (value != null) {
@@ -143,13 +142,11 @@ abstract public class AbstractOktaJwtTokenCredentialsAuthenticationServiceProces
 		authenticatedUser.setInvalidateCredentialsOnLogout(invalidateTokenCredentialsOnLogout);
 
 		return Maybe.complete(authenticatedUser);
-
 	}
 
 	protected abstract Maybe<Jwt> decodeJwt(String token);
 
 	protected Collection<String> getRolesFromToken(Map<String, Object> claims) {
-
 		Set<String> allRolesCombined = new HashSet<>();
 
 		for (Map.Entry<String, String> rolesEntry : claimRolesAndPrefixes.entrySet()) {
@@ -174,13 +171,13 @@ abstract public class AbstractOktaJwtTokenCredentialsAuthenticationServiceProces
 	}
 
 	private Stream<String> claimValuesAsStream(Object rolesObject) {
-		if (rolesObject instanceof Collection) {
+		if (rolesObject instanceof Collection)
 			return ((Collection<String>) rolesObject).stream();
-		} else if (rolesObject instanceof String) {
+
+		if (rolesObject instanceof String)
 			return Stream.of((String) rolesObject);
-		} else {
-			return Stream.empty();
-		}
+
+		return Stream.empty();
 	}
 
 }

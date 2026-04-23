@@ -13,23 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ============================================================================
-package tribefire.extension.okta.templates.wire.contract;
+package tribefire.extension.okta.config;
 
-import com.braintribe.model.meta.GmMetaModel;
-import com.braintribe.wire.api.space.WireSpace;
+import com.braintribe.model.generic.GenericEntity;
+import com.braintribe.model.generic.annotation.Abstract;
+import com.braintribe.model.generic.reflection.EntityType;
+import com.braintribe.model.generic.reflection.EntityTypes;
 
-import tribefire.extension.okta.templates.api.OktaTemplateContext;
+@Abstract
+public interface RxOktaAuthenticationSupplier extends GenericEntity {
 
-public interface OktaModelsContract extends WireSpace {
+	final EntityType<RxOktaAuthenticationSupplier> T = EntityTypes.T(RxOktaAuthenticationSupplier.class);
 
-	GmMetaModel configuredOktaApiModel(OktaTemplateContext context);
-
-	GmMetaModel configuredOktaAccessModel(OktaTemplateContext context);
-
-	GmMetaModel configuredOktaWbModel(OktaTemplateContext context);
-
-	/** @deprecated seems unused */
-	@Deprecated
-	GmMetaModel configuredOktaDeploymentModel(OktaTemplateContext context);
-
+	String getOktaDomainId();
+	void setOktaDomainId(String oktaDomainId);
 }

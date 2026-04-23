@@ -13,23 +13,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ============================================================================
-package tribefire.extension.okta.templates.wire.contract;
+package tribefire.extension.okta.config;
 
-import com.braintribe.model.meta.GmMetaModel;
-import com.braintribe.wire.api.space.WireSpace;
+import java.util.Set;
 
-import tribefire.extension.okta.templates.api.OktaTemplateContext;
+import com.braintribe.model.generic.annotation.meta.Mandatory;
+import com.braintribe.model.generic.reflection.EntityType;
+import com.braintribe.model.generic.reflection.EntityTypes;
 
-public interface OktaModelsContract extends WireSpace {
+public interface RxOktaClientSecretTokenAuthenticationSupplier extends RxOktaAuthenticationSupplier {
 
-	GmMetaModel configuredOktaApiModel(OktaTemplateContext context);
+	final EntityType<RxOktaClientSecretTokenAuthenticationSupplier> T = EntityTypes.T(RxOktaClientSecretTokenAuthenticationSupplier.class);
 
-	GmMetaModel configuredOktaAccessModel(OktaTemplateContext context);
+	@Mandatory
+	String getTokenUrl();
+	void setTokenUrl(String tokenUrl);
 
-	GmMetaModel configuredOktaWbModel(OktaTemplateContext context);
+	@Mandatory
+	String getClientId();
+	void setClientId(String clientId);
 
-	/** @deprecated seems unused */
-	@Deprecated
-	GmMetaModel configuredOktaDeploymentModel(OktaTemplateContext context);
+	@Mandatory
+	String getClientSecret();
+	void setClientSecret(String clientSecret);
+
+	Set<String> getScopes();
+	void setScopes(Set<String> scopes);
 
 }

@@ -33,7 +33,7 @@ import tribefire.extension.okta.initializer.wire.contract.ExistingInstancesContr
 import tribefire.extension.okta.initializer.wire.contract.OktaContract;
 import tribefire.extension.okta.initializer.wire.contract.RuntimePropertiesContract;
 import tribefire.extension.okta.templates.api.OktaTemplateContext;
-import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
+import tribefire.extension.okta.templates.wire.space.OktaTemplatesSpace;
 import tribrefire.extension.okta.common.OktaCommons;
 
 @Managed
@@ -51,7 +51,7 @@ public class OktaSpace extends AbstractInitializerSpace implements OktaContract,
 	ExistingInstancesContract existing;
 
 	@Import
-	OktaTemplatesContract templates;
+	OktaTemplatesSpace templates;
 
 	// ***************************************************************************************************
 	// Contract

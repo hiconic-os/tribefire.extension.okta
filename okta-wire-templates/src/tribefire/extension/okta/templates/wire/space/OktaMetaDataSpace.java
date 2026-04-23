@@ -47,37 +47,25 @@ import tribefire.extension.okta.api.model.user.ListUsers;
 import tribefire.extension.okta.deployment.model.OktaAuthenticationSupplier;
 import tribefire.extension.okta.model.OktaError;
 import tribefire.extension.okta.templates.api.OktaTemplateContext;
-import tribefire.extension.okta.templates.wire.contract.ExistingInstancesContract;
-import tribefire.extension.okta.templates.wire.contract.OktaHttpContract;
 import tribefire.extension.okta.templates.wire.contract.OktaMetaDataContract;
-import tribefire.extension.okta.templates.wire.contract.OktaModelsContract;
-import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
 import tribrefire.extension.okta.common.OktaCommons;
 
 @Managed
 public class OktaMetaDataSpace implements OktaMetaDataContract, OktaCommons {
 
 	@Import
-	private OktaModelsContract models;
+	private OktaModelsSpace models;
 
 	@Import
-	private OktaTemplatesContract templates;
+	private OktaTemplatesSpace templates;
 
 	@Import
-	private ExistingInstancesContract existing;
-
-	@Import
-	private OktaTemplatesContract initializer;
-
-	@Import
-	private OktaHttpContract http;
+	private OktaHttpSpace http;
 
 	@Override
 	public void configureMetaData(OktaTemplateContext context) {
-
 		configureDataModelMetaData(context);
 		configureApiModelMetaData(context);
-
 	}
 
 	private void configureApiModelMetaData(OktaTemplateContext context) {
@@ -136,7 +124,7 @@ public class OktaMetaDataSpace implements OktaMetaDataContract, OktaCommons {
 	@Managed
 	public PreProcessWith preProcessWithAuthorization(OktaTemplateContext context) {
 		PreProcessWith bean = context.create(PreProcessWith.T, InstanceConfiguration.currentInstance());
-		bean.setProcessor(initializer.authorizationPreProcessor(context));
+		bean.setProcessor(templates.authorizationPreProcessor(context));
 		return bean;
 	}
 
@@ -144,7 +132,7 @@ public class OktaMetaDataSpace implements OktaMetaDataContract, OktaCommons {
 	@Managed
 	public PreProcessWith preProcessWithConfiguredAuthorization(OktaTemplateContext context, OktaAuthenticationSupplier authSupplier) {
 		PreProcessWith bean = context.create(PreProcessWith.T, InstanceConfiguration.currentInstance());
-		bean.setProcessor(initializer.configuredAuthorizationPreProcessor(context, authSupplier));
+		bean.setProcessor(templates.configuredAuthorizationPreProcessor(context, authSupplier));
 		return bean;
 	}
 

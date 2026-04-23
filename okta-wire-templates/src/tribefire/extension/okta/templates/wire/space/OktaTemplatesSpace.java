@@ -24,7 +24,6 @@ import com.braintribe.wire.api.annotation.Import;
 import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.scope.InstanceConfiguration;
 
-import tribefire.cortex.initializer.support.integrity.wire.contract.CoreInstancesContract;
 import tribefire.extension.okta.deployment.model.OktaAccess;
 import tribefire.extension.okta.deployment.model.OktaAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaAuthorizationPreProcessor;
@@ -32,9 +31,6 @@ import tribefire.extension.okta.deployment.model.OktaClientSecretTokenAuthentica
 import tribefire.extension.okta.deployment.model.OktaConfiguredTokenAuthenticationSupplier;
 import tribefire.extension.okta.deployment.model.OktaOauthTokenAuthenticationSupplier;
 import tribefire.extension.okta.templates.api.OktaTemplateContext;
-import tribefire.extension.okta.templates.wire.contract.ExistingInstancesContract;
-import tribefire.extension.okta.templates.wire.contract.OktaMetaDataContract;
-import tribefire.extension.okta.templates.wire.contract.OktaModelsContract;
 import tribefire.extension.okta.templates.wire.contract.OktaTemplatesContract;
 import tribrefire.extension.okta.common.OktaCommons;
 
@@ -44,16 +40,10 @@ public class OktaTemplatesSpace implements OktaTemplatesContract, OktaCommons {
 	private static final Logger logger = Logger.getLogger(OktaTemplatesSpace.class);
 
 	@Import
-	private ExistingInstancesContract existing;
+	private OktaModelsSpace models;
 
 	@Import
-	private OktaModelsContract models;
-
-	@Import
-	private CoreInstancesContract coreInstances;
-
-	@Import
-	private OktaMetaDataContract metadata;
+	private OktaMetaDataSpace metadata;
 
 	private static AtomicInteger counter = new AtomicInteger(0);
 

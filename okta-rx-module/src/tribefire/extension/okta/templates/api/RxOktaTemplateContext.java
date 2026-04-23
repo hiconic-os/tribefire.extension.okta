@@ -1,6 +1,4 @@
 // ============================================================================
-// Copyright BRAINTRIBE TECHNOLOGY GMBH, Austria, 2002-2022
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,23 +11,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ============================================================================
-package tribefire.extension.okta.templates.wire.contract;
+package tribefire.extension.okta.templates.api;
 
-import com.braintribe.model.meta.GmMetaModel;
-import com.braintribe.wire.api.space.WireSpace;
+import hiconic.rx.module.api.wire.RxServiceProcessingContract;
+import hiconic.rx.webapi.client.api.ClientsFactory;
+import tribefire.extension.okta.config.RxOktaAuthenticationSupplier;
 
-import tribefire.extension.okta.templates.api.OktaTemplateContext;
+public interface RxOktaTemplateContext {
 
-public interface OktaModelsContract extends WireSpace {
+	static RxOktaTemplateContextBuilder builder() {
+		return new RxOktaTemplateContextImpl();
+	}
 
-	GmMetaModel configuredOktaApiModel(OktaTemplateContext context);
+	String getName();
 
-	GmMetaModel configuredOktaAccessModel(OktaTemplateContext context);
+	String getIdPrefix();
 
-	GmMetaModel configuredOktaWbModel(OktaTemplateContext context);
+	String getContext();
 
-	/** @deprecated seems unused */
-	@Deprecated
-	GmMetaModel configuredOktaDeploymentModel(OktaTemplateContext context);
+	String getServiceBaseUrl();
+
+	RxServiceProcessingContract serviceProcessingContract();
+
+	ClientsFactory getClientsFactory();
+
+	RxOktaAuthenticationSupplier getAccessAuthenticationSupplier();
+
+	RxOktaAuthenticationSupplier getDefaultAuthenticationSupplier();
 
 }

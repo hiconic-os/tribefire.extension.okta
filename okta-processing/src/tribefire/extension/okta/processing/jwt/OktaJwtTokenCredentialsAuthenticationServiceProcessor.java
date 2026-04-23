@@ -68,7 +68,11 @@ public class OktaJwtTokenCredentialsAuthenticationServiceProcessor extends Abstr
 	@Override
 	public void postConstruct() {
 		ClassLoader oldClassLoader = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(moduleClassLoader);
+
+		boolean needsCustomClassLoader = moduleClassLoader != null && moduleClassLoader != oldClassLoader;
+		if (needsCustomClassLoader)
+			Thread.currentThread().setContextClassLoader(moduleClassLoader);
+
 		try {
 			//@formatter:off
 			accessTokenVerifier = JwtVerifiers.accessTokenVerifierBuilder()
@@ -78,7 +82,8 @@ public class OktaJwtTokenCredentialsAuthenticationServiceProcessor extends Abstr
 				.build();
 			//@formatter:on
 		} finally {
-			Thread.currentThread().setContextClassLoader(oldClassLoader);
+			if (needsCustomClassLoader)
+				Thread.currentThread().setContextClassLoader(oldClassLoader);
 		}
 	}
 

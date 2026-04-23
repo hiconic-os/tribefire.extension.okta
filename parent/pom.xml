@@ -24,6 +24,7 @@ limitations under the License.
         <V.com.braintribe.common>[2.0,2.1)</V.com.braintribe.common>
         <V.com.braintribe.gm>[2.0,2.1)</V.com.braintribe.gm>
         <V.com.braintribe.wire>[2.0,2.1)</V.com.braintribe.wire>
+        <V.hiconic.platform.reflex>[1.0,1.1)</V.hiconic.platform.reflex>
         <V.tribefire.cortex>[3.0,3.1)</V.tribefire.cortex>
         <V.tribefire.extension.web-api>[1.0,1.1)</V.tribefire.extension.web-api>
         <V.com.okta.jwt>0.5.8</V.com.okta.jwt>

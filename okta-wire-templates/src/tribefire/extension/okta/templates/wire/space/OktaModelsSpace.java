@@ -78,8 +78,10 @@ public class OktaModelsSpace extends AbstractInitializerSpace implements OktaMod
 		return model;
 	}
 
+	/** @deprecated seems unused */
 	@Override
 	@Managed
+	@Deprecated
 	public GmMetaModel configuredOktaDeploymentModel(OktaTemplateContext context) {
 		GmMetaModel bean = create(GmMetaModel.T);
 

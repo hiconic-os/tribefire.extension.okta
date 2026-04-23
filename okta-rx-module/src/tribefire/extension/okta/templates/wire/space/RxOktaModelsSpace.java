@@ -1,6 +1,4 @@
 // ============================================================================
-// Copyright BRAINTRIBE TECHNOLOGY GMBH, Austria, 2002-2022
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,23 +11,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 // ============================================================================
-package tribefire.extension.okta.templates.wire.contract;
+package tribefire.extension.okta.templates.wire.space;
 
-import com.braintribe.model.meta.GmMetaModel;
+import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.space.WireSpace;
 
-import tribefire.extension.okta.templates.api.OktaTemplateContext;
+import hiconic.rx.module.api.service.ModelConfiguration;
+import hiconic.rx.module.api.service.ModelConfigurations;
+import tribefire.extension.okta._OktaApiModel_;
+import tribefire.extension.okta._OktaModel_;
 
-public interface OktaModelsContract extends WireSpace {
+@Managed
+public class RxOktaModelsSpace implements WireSpace {
 
-	GmMetaModel configuredOktaApiModel(OktaTemplateContext context);
+	public ModelConfiguration configuredOktaApiModel(ModelConfigurations configurations) {
+		return configurations.configuredModel(_OktaApiModel_.reflection);
+	}
 
-	GmMetaModel configuredOktaAccessModel(OktaTemplateContext context);
-
-	GmMetaModel configuredOktaWbModel(OktaTemplateContext context);
-
-	/** @deprecated seems unused */
-	@Deprecated
-	GmMetaModel configuredOktaDeploymentModel(OktaTemplateContext context);
+	public ModelConfiguration configuredOktaAccessModel(ModelConfigurations configurations) {
+		return configurations.configuredModel(_OktaModel_.reflection);
+	}
 
 }
