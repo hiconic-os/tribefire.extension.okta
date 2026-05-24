@@ -13,10 +13,9 @@
 // ============================================================================
 package tribefire.extension.okta.templates.wire;
 
-import hiconic.rx.module.api.wire.RxModule;
-import tribefire.extension.okta.wire.space.OktaRxModuleSpace;
+import com.braintribe.wire.api.module.WireModule;
 
-public enum RxOktaTemplateWireModule implements RxModule<OktaRxModuleSpace> {
+public enum RxOktaTemplateWireModule implements WireModule {
 
 	INSTANCE;
 
