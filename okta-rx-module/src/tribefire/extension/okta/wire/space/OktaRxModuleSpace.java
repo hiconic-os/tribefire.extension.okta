@@ -33,6 +33,7 @@ import hiconic.rx.access.module.api.AccessDataModelConfiguration;
 import hiconic.rx.access.module.api.AccessModelConfigurations;
 import hiconic.rx.access.module.api.AccessServiceModelConfiguration;
 import hiconic.rx.module.api.service.ModelConfigurations;
+import hiconic.rx.module.api.service.ServiceDomainConfigurations;
 import hiconic.rx.module.api.wire.RxModuleContract;
 import hiconic.rx.module.api.wire.RxPlatformContract;
 import tribefire.extension.okta.config.RxOktaAccess;
@@ -65,15 +66,24 @@ public class OktaRxModuleSpace implements RxModuleContract {
 	@Import
 	private RxOktaModelsSpace models;
 
+	private RxOktaAccess oktaAccessDeployabel;
+
 	@Override
 	public void configureModels(ModelConfigurations configurations) {
 		okta.configure(configurations);
 
 		if (runtime.ENABLE_OKTA_ACCESS())
-			configureOktaAccess(configurations);
+			oktaAccessDeployabel = configureOktaAccess(configurations);
 	}
 
-	private void configureOktaAccess(ModelConfigurations configurations) {
+	@Override
+	public void configureServiceDomains(ServiceDomainConfigurations configurations) {
+		// TODO this is stupid on Access extension part, it should allow this to be called even during configure models
+		if (oktaAccessDeployabel != null)
+			access.deploy(oktaAccessDeployabel, oktaAccess(oktaAccessDeployabel));
+	}
+
+	private RxOktaAccess configureOktaAccess(ModelConfigurations configurations) {
 		RxOktaAccess deployable = okta.oktaAccess(configurations);
 
 		AccessModelConfigurations accessModelConfigurations = access.accessModelConfigurations();
@@ -84,7 +94,7 @@ public class OktaRxModuleSpace implements RxModuleContract {
 		AccessServiceModelConfiguration apiModelConfiguration = accessModelConfigurations.serviceModelConfiguration(deployable.getAccessId());
 		apiModelConfiguration.addModel(models.configuredOktaApiModel(configurations));
 
-		access.deploy(deployable, oktaAccess(deployable));
+		return deployable;
 	}
 
 	@Managed

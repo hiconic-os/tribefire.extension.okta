@@ -15,11 +15,11 @@
 // ============================================================================
 package tribefire.extension.okta.api.model.auth;
 
-import com.braintribe.model.generic.GenericEntity;
 import com.braintribe.model.generic.reflection.EntityType;
 import com.braintribe.model.generic.reflection.EntityTypes;
+import com.braintribe.model.service.api.ServiceRequest;
 
-public interface HasAuthorization extends GenericEntity {
+public interface HasAuthorization extends ServiceRequest {
 
 	EntityType<HasAuthorization> T = EntityTypes.T(HasAuthorization.class);
 

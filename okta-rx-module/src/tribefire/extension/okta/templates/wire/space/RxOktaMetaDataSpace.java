@@ -23,7 +23,6 @@ import com.braintribe.wire.api.annotation.Import;
 import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.space.WireSpace;
 
-import hiconic.rx.model.service.processing.md.PreProcessWith;
 import hiconic.rx.model.service.processing.md.ProcessWith;
 import hiconic.rx.module.api.service.ModelConfiguration;
 import hiconic.rx.module.api.service.ModelConfigurations;
@@ -66,13 +65,26 @@ public class RxOktaMetaDataSpace implements WireSpace, OktaCommons {
 	}
 
 	private void configureApiModel(RxOktaTemplateContext context, ModelConfigurations configurations) {
-		ModelConfiguration configuredModel = models.configuredOktaApiModel(configurations);
+		ModelConfiguration modelConfiguration = models.configuredOktaApiModel(configurations);
+
+		modelConfiguration.bindInterceptor("AuthorizedOktaRequestPreProcessor") //
+				.forType(AuthorizedOktaRequest.T) //
+				.bind(() -> initializer.authorizationPreProcessor(context));
+
+		RxOktaAuthenticationSupplier authSupplier = context.getDefaultAuthenticationSupplier();
+		if (authSupplier != null) {
+
+			modelConfiguration.bindInterceptor("AuthorizedOktaRequsfsestPreProcessor") //
+					.forType(HasAuthorization.T) //
+					.bind(() -> initializer.configuredAuthorizationPreProcessor(context, authSupplier));
+		}
+
+		//
 
 		// OktaRequest related
-		configuredModel.configureModel(editor -> {
+		modelConfiguration.configureModel(editor -> {
 			editor.onEntityType(OktaRequest.T).addMetaData(oktaRequestProcessingMds(context));
 			editor.onEntityType(OktaRequest.T).addMetaData(httpDefaultFailureResponseType());
-			editor.onEntityType(AuthorizedOktaRequest.T).addMetaData(preProcessWithAuthorization(context));
 
 			editor.onEntityType(ListUsers.T).addMetaData(http.httpGet(), http.httpPathForListUsers());
 			editor.onEntityType(ListUsers.T).addPropertyMetaData(http.httpQueryParamAsIsIfDeclared());
@@ -86,16 +98,11 @@ public class RxOktaMetaDataSpace implements WireSpace, OktaCommons {
 			editor.onEntityType(ListAppUsers.T).addMetaData(http.httpGet(), http.httpPathForListAppUsers());
 			editor.onEntityType(ListAppGroups.T).addMetaData(http.httpGet(), http.httpPathForListAppGroups());
 
-			if (context.getDefaultAuthenticationSupplier() != null) {
-				editor.onEntityType(HasAuthorization.T)
-						.addMetaData(preProcessWithConfiguredAuthorization(context, context.getDefaultAuthenticationSupplier()));
-			}
-
 			configureAuthorizationRequests(editor);
 		});
 	}
 
-	public void configureAuthorizationRequests(ModelMetaDataEditor editor) {
+	private void configureAuthorizationRequests(ModelMetaDataEditor editor) {
 		editor.onEntityType(GetAccessToken.T).addPropertyMetaData(GetOauthAccessToken.grantType, http.httpBodyParamForGrantType());
 		editor.onEntityType(GetAccessToken.T).addPropertyMetaData(GetOauthAccessToken.scope, http.httpBodyParamForScope());
 
@@ -115,21 +122,7 @@ public class RxOktaMetaDataSpace implements WireSpace, OktaCommons {
 	}
 
 	@Managed
-	public PreProcessWith preProcessWithAuthorization(RxOktaTemplateContext context) {
-		PreProcessWith bean = PreProcessWith.T.create();
-		bean.setAssociate(initializer.authorizationPreProcessor(context));
-		return bean;
-	}
-
-	@Managed
-	public PreProcessWith preProcessWithConfiguredAuthorization(RxOktaTemplateContext context, RxOktaAuthenticationSupplier authSupplier) {
-		PreProcessWith bean = PreProcessWith.T.create();
-		bean.setAssociate(initializer.configuredAuthorizationPreProcessor(context, authSupplier));
-		return bean;
-	}
-
-	@Managed
-	public MetaData[] oktaRequestProcessingMds(RxOktaTemplateContext context) {
+	private MetaData[] oktaRequestProcessingMds(RxOktaTemplateContext context) {
 		MetaData[] bean = new MetaData[] { processWithOktaHttpProcessor(context), httpProcessWithOktaClient(context) };
 		return bean;
 	}
@@ -149,7 +142,7 @@ public class RxOktaMetaDataSpace implements WireSpace, OktaCommons {
 	}
 
 	@Managed
-	public HttpDefaultFailureResponseType httpDefaultFailureResponseType() {
+	private HttpDefaultFailureResponseType httpDefaultFailureResponseType() {
 		HttpDefaultFailureResponseType bean = HttpDefaultFailureResponseType.T.create();
 		bean.setResponseTypeSignature(OktaError.T.getTypeSignature());
 		return bean;
@@ -162,7 +155,7 @@ public class RxOktaMetaDataSpace implements WireSpace, OktaCommons {
 	}
 
 	@Managed
-	public Unmodifiable unmodifiableIfDeclaredInOktaModel() {
+	private Unmodifiable unmodifiableIfDeclaredInOktaModel() {
 		Unmodifiable bean = Unmodifiable.T.create();
 		bean.setSelector(declaredInOktaModelSelector());
 		return bean;

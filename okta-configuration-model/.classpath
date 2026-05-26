@@ -6,5 +6,4 @@
 	<classpathentry kind="con" path="Braintribe.ArtifactClasspathContainer"/>
 	<classpathentry kind="output" path="classes"/>
 	<classpathentry exported="true" kind="lib" path="class-gen"/>
-	<classpathentry exported="true" kind="lib" path="class-gen"/>
 </classpath>
