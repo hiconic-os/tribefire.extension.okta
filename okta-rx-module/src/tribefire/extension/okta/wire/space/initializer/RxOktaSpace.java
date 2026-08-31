@@ -98,7 +98,7 @@ public class RxOktaSpace implements WireSpace {
 		if (useClientSecret()) {
 			return clientSecretTokenAuthenticationSupplier();
 		} else {
-			log.error("Missing configuration: No Client Secret is configured.");
+			log.info("No default authentication supplier configured (OKTA_CLIENT_SECRET_TOKEN_URL, OKTA_CLIENT_ID, OKTA_CLIENT_SECRET).");
 		}
 		return null;
 	}
