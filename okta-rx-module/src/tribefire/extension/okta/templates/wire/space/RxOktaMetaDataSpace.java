@@ -27,7 +27,6 @@ import hiconic.rx.model.service.processing.md.ProcessWith;
 import hiconic.rx.module.api.service.ModelConfiguration;
 import hiconic.rx.module.api.service.ModelConfigurations;
 import hiconic.rx.webapi.client.model.meta.HttpDefaultFailureResponseType;
-import hiconic.rx.webapi.client.model.meta.HttpProcessWith;
 import tribefire.extension.okta.api.model.AuthorizedOktaRequest;
 import tribefire.extension.okta.api.model.OktaRequest;
 import tribefire.extension.okta.api.model.auth.GetAccessToken;
@@ -123,21 +122,14 @@ public class RxOktaMetaDataSpace implements WireSpace, OktaCommons {
 
 	@Managed
 	private MetaData[] oktaRequestProcessingMds(RxOktaTemplateContext context) {
-		MetaData[] bean = new MetaData[] { processWithOktaHttpProcessor(context), httpProcessWithOktaClient(context) };
+		MetaData[] bean = new MetaData[] { processWithOktaHttpProcessor(context) };
 		return bean;
 	}
 
 	@Managed
 	private ProcessWith processWithOktaHttpProcessor(RxOktaTemplateContext context) {
 		ProcessWith bean = ProcessWith.T.create();
-		bean.setAssociate(http.dynamicHttpProcessor(context));
-		return bean;
-	}
-
-	@Managed
-	private HttpProcessWith httpProcessWithOktaClient(RxOktaTemplateContext context) {
-		HttpProcessWith bean = HttpProcessWith.T.create();
-		bean.setHttpClient(http.oktaHttpClient(context, context.getAccessAuthenticationSupplier()));
+		bean.setAssociate(http.oktaClientHttpProcessor(context));
 		return bean;
 	}
 

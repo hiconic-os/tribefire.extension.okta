@@ -23,7 +23,7 @@ import com.braintribe.wire.api.annotation.Managed;
 import com.braintribe.wire.api.space.WireSpace;
 
 import hiconic.rx.webapi.client.api.HttpClient;
-import hiconic.rx.webapi.client.model.configuration.GmHttpClient;
+import hiconic.rx.webapi.client.model.configuration.WebApiRemoteProcessor;
 import hiconic.rx.webapi.client.model.meta.HttpConsumes;
 import hiconic.rx.webapi.client.model.meta.HttpDefaultFailureResponseType;
 import hiconic.rx.webapi.client.model.meta.HttpPath;
@@ -47,8 +47,10 @@ public class RxOktaHttpSpace implements WireSpace, OktaCommons {
 	private static AtomicInteger counter = new AtomicInteger(0);
 
 	@Managed
-	public ServiceProcessor<ServiceRequest, Object> dynamicHttpProcessor(RxOktaTemplateContext context) {
-		return context.getClientsFactory().createMdBasedWebApiClientProcessor(Collections.emptySet());
+	public ServiceProcessor<ServiceRequest, Object> oktaClientHttpProcessor(RxOktaTemplateContext context) {
+		HttpClient oktaHttpClient = oktaHttpClient(context, context.getAccessAuthenticationSupplier());
+
+		return context.getClientsFactory().createMdBasedWebApiClientProcessor(oktaHttpClient, Collections.emptySet());
 	}
 
 	@Managed
@@ -226,13 +228,13 @@ public class RxOktaHttpSpace implements WireSpace, OktaCommons {
 	}
 
 	@Managed
-	// also referenced from TangramSpace, as value for HttpProcessWith.client
+	// Keep this public !!!
 	public HttpClient oktaHttpClient(RxOktaTemplateContext context, RxOktaAuthenticationSupplier oktaAuthenticationSupplier) {
-		return context.getClientsFactory().createGmHttpClient(oktaHttpClientDenotation(context, oktaAuthenticationSupplier));
+		return context.getClientsFactory().createHttpClient(oktaHttpClientDenotation(context, oktaAuthenticationSupplier));
 	}
 
-	private GmHttpClient oktaHttpClientDenotation(RxOktaTemplateContext context, RxOktaAuthenticationSupplier oktaAuthenticationSupplier) {
-		GmHttpClient bean = GmHttpClient.T.create();
+	private WebApiRemoteProcessor oktaHttpClientDenotation(RxOktaTemplateContext context, RxOktaAuthenticationSupplier oktaAuthenticationSupplier) {
+		WebApiRemoteProcessor bean = WebApiRemoteProcessor.T.create();
 		int count = counter.incrementAndGet();
 		bean.setName(OKTA_HTTP_CONNECTOR_NAME + " " + context.getName() + " (" + count + ")");
 
